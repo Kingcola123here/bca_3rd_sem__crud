@@ -1,0 +1,161 @@
+npm install express mongoose nodemon (run it in vs code terminal folder name crud)
+create server.js
+in package.json(
+{
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.1.1",
+    "nodemon": "^3.0.3"
+  }
+}
+)
+
+In server.js(
+let express = require('express'); //package call
+
+let app = express(); // instance create
+
+app.get('/', (req, res) => {
+res.send('Hello World');
+});
+
+app.listen(3000, ()=>{
+    console.log('Server is running on port 3000');
+});
+)
+
+mongoosejs.com
+
+Install mongodb
+
+server.js(
+let express = require('express'); //package call
+let mongoose = require('mongoose');
+
+//connect to mongodb
+mongoose.connect('mongodb://127.0.0.1:27017/bcacrud');
+
+let Student = mongoose.model('Student', {
+    name:String,
+    email:String,
+    address:Number
+});
+
+let app = express(); // instance create
+
+app.get('/', (req, res) => {  // => arrow function
+res.send('Hello World');
+});
+
+app.listen(3000, ()=>{
+    console.log('Server is running on port 3000');
+});
+)
+
+to insert data
+server.js(
+let express = require('express'); //package call
+let mongoose = require('mongoose');
+
+//connect to mongodb
+mongoose.connect('mongodb://127.0.0.1:27017/bcacrud');
+
+let Student = mongoose.model('Student', {
+    name:String,
+    email:String,
+    address:String
+});
+
+let app = express(); // instance create
+
+app.get('/', async (req, res) => {  // => arrow function
+    let data =await Student.find({})
+        res.status(200).json(data);
+});
+app.get('/insert', async (req, res) => {  // => arrow function
+    let data = {
+        name:"raj",
+        email:"raj@gmail.com",
+        address:"ktm"
+    }
+        let student = new Student(data);
+        await student.save();
+        res.status(200).json({message: "Data inserted"});
+});
+
+app.listen(3000, ()=>{
+    console.log('Server is running on port 3000');
+});
+)
+
+goto localhost:3000/insert
+return to local host
+
+--------------------------------
+In server.js(
+let express = require('express'); //package call
+let mongoose = require('mongoose');
+
+//connect to mongodb
+mongoose.connect('mongodb://127.0.0.1:27017/bcacrud');
+
+let Student = mongoose.model('Student', {
+    name:String,
+    email:String,
+    address:String
+});
+
+let app = express(); // instance create
+app.use(express.json());
+
+app.get('/', async (req, res) => {  // => arrow function
+    let data =await Student.find({})
+        res.status(200).json(data);
+});
+app.get('/insert', async (req, res) => {  // => arrow function
+    let data = {
+        name:"raj",
+        email:"raj@gmail.com",
+        address:"ktm"
+    }
+        let student = new Student(data);
+        await student.save();
+        res.status(200).json({message: "Data inserted"});
+});
+
+app.post('/', async(req, res) => {
+    const sR = new Student(req.body);
+    await sR.save();
+    return res.status(201).send(sR);
+});
+
+app.listen(3000, ()=>{
+    console.log('Server is running on port 3000');
+});
+)
+
+How to connect repository
+
+git init
+git status
+git add *
+git commit -m ""
+git breach -M main
+git remote add site
+git push -u origin main
+
+Check thunder client
+go to post
+localhost:3000
+body
+json
+{
+  "name":"Aakash",
+  "email":"aakash@gmail.com",
+  "address":"ktm"
+}
+
+output available mongodb
