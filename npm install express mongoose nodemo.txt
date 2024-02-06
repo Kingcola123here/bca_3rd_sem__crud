@@ -159,3 +159,112 @@ json
 }
 
 output available mongodb
+
+npm install cors
+
+server.js(
+let express = require('express'); //package call
+let mongoose = require('mongoose');
+let cors =require('cors');
+
+//connect to mongodb
+mongoose.connect('mongodb://127.0.0.1:27017/bcacrud');
+
+let Student = mongoose.model('Student', {
+    name:String,
+    email:String,
+    address:String
+});
+
+
+
+let app = express(); // instance create
+app.use(express.json());
+app.use(cors());
+
+app.get('/', async (req, res) => {  // => arrow function
+    let data =await Student.find({})
+        res.status(200).json(data);
+});
+// app.get('/insert', async (req, res) => {  // => arrow function
+//     let data = {
+//         name:"raj",
+//         email:"raj@gmail.com",
+//         address:"ktm"
+//     }
+//         let student = new Student(data);
+//         await student.save();
+//         res.status(200).json({message: "Data inserted"});
+// });
+
+app.post('/', async(req, res) => {
+    const sR = new Student(req.body);
+    await sR.save();
+    return res.status(201).send(sR);
+});
+
+app.listen(3000, ()=>{
+    console.log('Server is running on port 3000');
+});
+)
+
+index.html(
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <blockquote>
+      <h1>Student Management</h1>
+      <hr />
+      <table border="1" width="100%">
+        <thead>
+          <tr>
+            <th>S.no</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="students_list"></tbody>
+      </table>
+    </blockquote>
+    <script>
+      function getData() {
+        fetch("http://localhost:3000")
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            let outPut = "";
+
+            data.map((Student, index) => {
+              outPut += `
+            <tr>
+                <td>${++index}</td>
+                <td>${Student.name}</td>
+                <td>${Student.email}</td>
+                <td>${Student.address}</td>
+                <td>
+                 <button>Edit</button>
+                 <button>Delete</button>
+                </td>
+            </tr>
+            `;
+            });
+            document.getElementById("students_list").innerHTML = outPut;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      getData();
+    </script>
+  </body>
+</html>
+
+)

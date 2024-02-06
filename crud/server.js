@@ -1,5 +1,6 @@
 let express = require('express'); //package call
 let mongoose = require('mongoose');
+let cors =require('cors');
 
 //connect to mongodb
 mongoose.connect('mongodb://127.0.0.1:27017/bcacrud');
@@ -14,6 +15,7 @@ let Student = mongoose.model('Student', {
 
 let app = express(); // instance create
 app.use(express.json());
+app.use(cors());
 
 app.get('/', async (req, res) => {  // => arrow function
     let data =await Student.find({})
