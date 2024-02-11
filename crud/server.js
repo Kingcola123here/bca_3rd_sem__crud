@@ -21,16 +21,16 @@ app.get('/', async (req, res) => {  // => arrow function
     let data =await Student.find({})
         res.status(200).json(data);
 });
-// app.get('/insert', async (req, res) => {  // => arrow function
-//     let data = {
-//         name:"raj",
-//         email:"raj@gmail.com",
-//         address:"ktm"
-//     }
-//         let student = new Student(data);
-//         await student.save();
-//         res.status(200).json({message: "Data inserted"});
-// });
+app.get('/insert', async (req, res) => {  // => arrow function
+    let data = {
+        name:"raj",
+        email:"raj@gmail.com",
+        address:"ktm"
+    }
+        let student = new Student(data);
+        await student.save();
+        res.status(200).json({message: "Data inserted"});
+});
 
 app.post('/', async(req, res) => {
     const sR = new Student(req.body);

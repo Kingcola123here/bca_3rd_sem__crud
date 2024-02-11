@@ -7,7 +7,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/bcacrud');
 let User =mongoose.model('User', {
     name:String,
     email:String,
-    address:String
+    address:String,
+    phone:Number
 });
 
 let app=express();
